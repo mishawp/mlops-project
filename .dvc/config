@@ -1,0 +1,6 @@
+[core]
+	remote = mlops_project
+['remote "mlops_project"']
+	url = s3://mihail-valiev-gjj7899
+	use_ssl = true
+	endpointurl = https://s3.lab.karpov.courses
