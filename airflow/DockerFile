@@ -1,0 +1,32 @@
+FROM apache/airflow:2.10.4-python3.12
+
+# Устанавливаем git, так как он необходим для инициализации DVC
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+RUN chown -R airflow:root /opt/ && chmod -R 775 /opt/
+RUN groupmod -g 1000 root
+USER airflow
+
+RUN airflow db init
+
+RUN airflow users create --username misha --password 1234 --firstname M --lastname V --role Admin --email mikhail.valiev7@gmail.com
+
+WORKDIR /opt/
+
+COPY --chown=airflow:root requirements.txt ./airflow/
+
+RUN pip install -r airflow/requirements.txt
+
+COPY --chown=airflow:root . ./airflow/
+
+RUN git init && dvc init
+
+COPY --chown=airflow:root /config/config config/config.local .dvc/
+
+ENTRYPOINT ["airflow", "standalone"]
+
+# chmod -R 775 ./model
+# не смог иначе решить

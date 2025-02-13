@@ -173,7 +173,7 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-*/config.local
+*config.local
 obsidian/.obsidian
 mlflow/mlruns
 mlflow/mlartifacts
