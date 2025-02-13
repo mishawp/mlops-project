@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  mlflow:
+    build:
+      context: mlflow
+      dockerfile: DockerFile
+    volumes:
+      - ./mlflow:/app
+    ports:
+      - "8081:8081"
+    environment:
+      - MLFLOW_TRACKING_URI=http://127.0.0.1:8081
+    restart: unless-stopped

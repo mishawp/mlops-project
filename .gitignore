@@ -175,3 +175,5 @@ cython_debug/
 
 */config.local
 obsidian/.obsidian
+mlflow/mlruns
+mlflow/mlartifacts
