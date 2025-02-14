@@ -1,4 +1,3 @@
-import os
 import pytest
 from app.src.main import startup
 
