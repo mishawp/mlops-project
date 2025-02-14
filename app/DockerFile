@@ -1,0 +1,25 @@
+FROM python:3.12.9
+
+# Устанавливаем git, так как он необходим для инициализации DVC
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app/
+
+COPY requirements.txt .
+
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
+COPY . .
+
+RUN git init && dvc init
+
+EXPOSE 8080
+
+COPY /config/config config/config.local .dvc/
+
+WORKDIR /app/src/
+
+CMD ["python", "main.py"]

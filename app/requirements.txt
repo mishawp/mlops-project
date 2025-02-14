@@ -1,0 +1,7 @@
+fastapi==0.115.8
+uvicorn==0.34.0
+dvc==3.59.0
+dvc-s3==3.2.0
+scikit-learn==1.6.1
+numpy==2.2.2
+pandas==2.2.3

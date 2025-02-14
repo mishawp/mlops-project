@@ -27,6 +27,3 @@ RUN git init && dvc init
 COPY --chown=airflow:root /config/config config/config.local .dvc/
 
 ENTRYPOINT ["airflow", "standalone"]
-
-# chmod -R 775 ./model
-# не смог иначе решить
