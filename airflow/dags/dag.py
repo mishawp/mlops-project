@@ -33,7 +33,8 @@ train_model_task = PythonOperator(
 
 push_data_task = BashOperator(
     task_id="dvc_push_model",
-    bash_command="cd $PROJECT_ROOT && dvc add models/main && dvc push models/main.dvc",
+    bash_command="""cd $PROJECT_ROOT && 
+        dvc add models/main && dvc push models/main.dvc""",
     dag=dag,
 )
 
