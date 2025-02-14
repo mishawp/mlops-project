@@ -23,7 +23,7 @@ class WineFeatures(BaseModel):
 
 
 app = FastAPI()
-PROJECT_ROOT = os.getenv("PROJECT_ROOT", "../..")
+PROJECT_ROOT = os.getenv("PROJECT_ROOT", ".")
 model: BaseEstimator = None
 
 
