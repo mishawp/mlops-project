@@ -29,6 +29,14 @@ model: BaseEstimator = None
 
 @app.on_event("startup")
 def startup():
+    current_directory = os.getcwd()
+    print(f"Текущая директория: {current_directory}")
+
+    # Список файлов и папок в текущей директории
+    files_and_folders = os.listdir(current_directory)
+    print("Файлы и папки в текущей директории:")
+    for item in files_and_folders:
+        print(item)
     os.system(f"cd {PROJECT_ROOT} && dvc pull models/main.dvc")
     global model
     model = joblib.load(PROJECT_ROOT + "/models/main/model.pkl")
