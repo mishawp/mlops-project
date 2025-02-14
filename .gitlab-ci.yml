@@ -1,0 +1,63 @@
+stages:
+  test
+
+lint_job:
+  stage: test
+  image: python:3.12.9
+  before_script:
+    - python -m venv .venv
+    - source .venv/bin/activate
+    - pip install flake8
+  script:
+    - flake8 --exclude .git,.venv,__init__.py .
+  allow_failure: true
+  cache:
+    key: flake8
+    paths:
+      - .venv/
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+
+dvc:
+  stage: test
+  image: python:3.12.9
+  before_script:
+    - python -m venv .venv
+    - source .venv/bin/activate
+    - pip install dvc dvc-s3
+    - dvc remote add -d mlops_project $S3_BUCKET_URL
+    - dvc remote modify mlops_project use_ssl true
+    - dvc remote modify mlops_project $S3_ENDPOINTURL
+    - dvc remote modify mlops_project access_key_id $S3_ACCESS_KEY
+    - dvc remote modify mlops_project secret_access_key $S3_SECRET_KEY
+  script:
+    - dvc pull
+    - test -f data/winequality-red.csv && echo "Data file exists."
+    - test -d models/main && echo "Model directory exists."
+  cache:
+    key: dvc
+    paths:
+      - .venv/
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+
+tests_job:
+  stage: test
+  image: python:3.12.9
+  before_script:
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+  script:
+    - pytest -ra -W ignore tests
+  artifacts:
+    paths:
+      - test-reports/
+    expire_in: 1 week
+  cache:
+    key:
+      files:
+        - "requirements.txt"
+    paths:
+      - .venv/
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'

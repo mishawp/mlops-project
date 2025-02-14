@@ -1,5 +1,53 @@
 # Оценка качества вина методами машинного обучения
 
+## Структура проекта
+
+```plaintext
+project_root/
+│
+├── data/
+│
+├── models/
+|
+├── airflow/
+|   ├── config/                         # config and config.local for dvc
+│   ├── dags/
+|   |   ├── gb_train.py                 # train_test model
+│   |   └── dag.py
+|   ├── DockerFile
+│   └── requirements.txt
+|
+├── mlflow/
+│   ├── src/
+│   │   ├── tracking_best_model.py
+│   |   └── tracking_experiments.py
+|   ├── DockerFile
+│   └── requirements.txt
+|
+├── app/
+|   ├── config/                         # config and config.local for dvc
+│   ├── src/
+│   |   └── main.py
+|   ├── DockerFile
+│   └── requirements.txt
+|
+├── tests/
+|
+├── requirements.txt
+|
+├── docker-compose.yml
+|
+├── .env
+│
+├── .gitlab-ci.yml
+│
+├── .gitignore
+│
+├── obsidian/
+|
+└── README.md
+```
+
 ## Процесс и результаты экспериментов
 
 В ходе работы были протестированы две модели из библиотеки scikit-learn: GradientBoostingRegressor и RandomForestRegressor. Эксперименты логировались с помощью MLflow. Перебирались следующие гиперпараметры:
