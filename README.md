@@ -94,3 +94,21 @@ GradientBoostingRegressor:
 | **RMSE**          | **0.565**                                                  | **0.575**                                                  |
 
 Как мы видим, разница в качестве у моделей невелика, но все же есть. Поэтому для предсказаний в продакшене мы будем использовать **GradientBoostingRegressor**.
+
+## Инструкция по запуску
+
+1. Подключиться к minio s3 и загрузить данные и модель;
+2. Запустить docker-compose
+   - API прослушивается по порту 8080;
+   - MLflow по порту 8081;
+   - Airflow по порту 8082.
+
+- Все логи от `mlfow` сохраняются в директорию `mlflow`;
+
+- Если данных и модели еще нет в dvc, то надо
+  - скачать [данные](https://github.com/aniruddhachoudhury/Red-Wine-Quality/blob/master/winequality-red.csv) в `data/winequality-red.csv`;
+  - запустить `mlflow/src/tracking_best_model.py`;
+  - сделать `dvc add data/winequality-red.csv models/main`;
+  - не забыть поменять `config`-ы для dvc для `airflow` и `api`.
+
+P.S. дико извиняюсь за названия токенов (не знал, что они где-то будут светиться)
