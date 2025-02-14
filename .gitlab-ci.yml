@@ -35,6 +35,7 @@ dvc:
     key: dvc
     paths:
       - .venv/
+      - .dvc/
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
 
@@ -46,6 +47,8 @@ tests_job:
     - source .venv/bin/activate
     - pip install --upgrade pip
     - pip install -r requirements.txt
+    - dvc remote modify mlops_project access_key_id $S3_ACCESS_KEY --local
+    - dvc remote modify mlops_project secret_access_key $S3_SECRET_KEY --local
   script:
     - pytest -ra -W ignore tests
   artifacts:
@@ -58,5 +61,6 @@ tests_job:
         - "requirements.txt"
     paths:
       - .venv/
+      - .dvc/
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
